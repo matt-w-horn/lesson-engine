@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.env
+.DS_Store
+*.local
+
+# The vendored Python runtime (npm run vendor:pyodide regenerates it from the
+# pinned pyodide package; ~15 MB of wasm has no business in git)
+public/pyodide/
+
+# Python bytecode (graders + scripts)
+*.pyc
+__pycache__/
+
+# Local-only files
+CLAUDE.md
+.claude/settings.local.json
+.claude/worktrees/
+
+# Makefile dev-server bookkeeping
+.dev-server.log
+.dev-server.pid

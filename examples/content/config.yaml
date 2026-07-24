@@ -1,0 +1,11 @@
+# Engine-wide values live here, never per lesson.
+app_title: "Lesson Engine"
+ep_per_lesson: 30
+est_minutes_by_type:
+  read_run: 3
+  explore: 5
+  complete: 8
+  debug: 8
+  write: 12
+default_packages: []
+run_timeout_ms: 20000

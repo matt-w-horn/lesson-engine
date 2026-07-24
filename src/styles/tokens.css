@@ -1,0 +1,93 @@
+/* Design tokens — the one place visual constants live.
+   Both themes are defined together via light-dark(): the light value first,
+   the dark value second. The toolbar toggle forces a side by stamping
+   data-theme on <html>; with no stamp the OS preference decides.
+
+   The accent system keeps the course's phase-diagram semantics and adds a
+   reward tier:
+     teal  = interactive (links, buttons, focus — the cool accent)
+     green = healthy / pass / progress (luminous in bars)
+     amber = bistable / prediction / warnings
+     gold  = reward moments (EP, celebration)
+     rust  = congested / fail
+   Light mode is warm paper; dark mode is a cool blue-grey slate with the
+   green/teal accents carrying the color. */
+:root {
+  color-scheme: light dark;
+
+  /* surfaces, raised → inset (warm paper / cool slate) */
+  --bg: light-dark(#faf5eb, #141a20);
+  --bg-panel: light-dark(#fffdf6, #1c242d);
+  --bg-code: light-dark(#f3ecdd, #181f27);
+  --bg-inset: light-dark(#ece3d0, #0e1319);
+  --bg-topbar: light-dark(#fffcf3, #19212a);
+  --text: light-dark(#332a20, #e2e9ec);
+  --text-muted: light-dark(#6d604d, #96a5ad);
+  --text-faint: light-dark(#998a72, #6b7a83);
+  --border: light-dark(#e5dcc8, #2d3a44);
+  --border-strong: light-dark(#cfc3a9, #40505c);
+
+  /* interactive: warm sienna by day, cool teal by night. Green is reserved
+     for progress and pass states, where it means something. */
+  --accent: light-dark(#9d5426, #57d6bb);
+  --accent-soft: light-dark(#f5e6d7, #1c3530);
+  --accent-contrast: light-dark(#ffffff, #08201b); /* text on --accent, AA */
+
+  /* phase + reward colors (text-safe on --bg-panel) */
+  --pass: light-dark(#22774a, #83dfa8);
+  --pass-soft: light-dark(#e2f0e4, #1e3529);
+  --fail: light-dark(#b2401f, #f2907e);
+  --fail-soft: light-dark(#f8e7dd, #392626);
+  --warn: light-dark(#8f5f08, #e6c37b);
+  --warn-soft: light-dark(#f5ecd4, #33301f);
+  --reward: light-dark(#a05416, #f2c87c);
+  --reward-soft: light-dark(#f9ead6, #32301e);
+
+  /* luminous tier: bar fills and glows, never body text */
+  --pass-bright: light-dark(#2fb56b, #6ff0a8);
+  --glow-pass: light-dark(rgba(47, 181, 107, 0.4), rgba(111, 240, 168, 0.4));
+  --glow-accent: light-dark(rgba(157, 84, 38, 0.25), rgba(87, 214, 187, 0.3));
+  --glow-reward: light-dark(rgba(224, 130, 50, 0.32), rgba(242, 200, 124, 0.3));
+
+  /* implied overhead light: a faint page-top wash, no drawn fixtures */
+  --ambient-glow: light-dark(rgba(255, 176, 88, 0.05), rgba(150, 185, 205, 0.04));
+  /* the rim highlight: light catching a panel's top edge */
+  --rim-light: light-dark(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.05));
+  /* the unlit part of the unit runway: a recess in the surface, not a
+     glowing state of its own */
+  --track-socket: light-dark(rgba(51, 42, 32, 0.16), rgba(0, 0, 0, 0.55));
+
+  --overlay-scrim: light-dark(rgba(51, 40, 28, 0.35), rgba(4, 8, 12, 0.6));
+
+  --radius: 8px;
+  --radius-lg: 12px;
+  --topbar-h: 48px;
+  --shadow-panel: inset 0 1px 0 var(--rim-light),
+    0 1px 2px light-dark(rgba(51, 42, 32, 0.05), rgba(0, 0, 0, 0.3)),
+    0 10px 28px -14px light-dark(rgba(51, 42, 32, 0.16), rgba(0, 0, 0, 0.55));
+  --shadow-lift: inset 0 1px 0 var(--rim-light),
+    0 2px 4px light-dark(rgba(51, 42, 32, 0.06), rgba(0, 0, 0, 0.35)),
+    0 14px 32px -12px light-dark(rgba(51, 42, 32, 0.2), rgba(0, 0, 0, 0.6));
+  --font-body: "Charter", "Georgia", serif;
+  --font-ui: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "SF Mono", "Menlo", monospace;
+  --measure: 40rem;
+
+  /* editor syntax + chrome */
+  --code-keyword: light-dark(#6f56a8, #c2aaec);
+  --code-string: light-dark(#4c7a44, #a9cf94);
+  --code-comment: light-dark(#9a8f7f, #71828c);
+  --code-number: light-dark(#a3641f, #e5b483);
+  --code-func: light-dark(#2f6d96, #8fc3e4);
+  --code-op: light-dark(#5c554a, #94a5ae);
+  --selection: light-dark(#ece0cb, #28434a);
+  --active-line: light-dark(rgba(0, 0, 0, 0.03), rgba(255, 255, 255, 0.04));
+}
+
+/* The toggle's explicit choice; unset = follow the OS. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
