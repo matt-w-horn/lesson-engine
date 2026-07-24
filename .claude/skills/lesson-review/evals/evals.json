@@ -1,0 +1,17 @@
+{
+  "skill_name": "lesson-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review the slicing unit's five lessons in lesson-engine before I mark the unit done.",
+      "expected_output": "A per-lesson report using the skill's format: mechanical gates actually executed (validator run, starter and reference solutions run through the python harness, hidden checks exercised, qa_check.py output weighed as suggestions), then chain/pedagogy/prose/code/grader audit findings ranked high/med/low with file:line and smallest-fix suggestions; SHIP or FIX verdict per lesson; no fixes applied unprompted.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I just wrote lessons/parsing-write (lesson.md and grade.py pasted below) — check whether the grader can be gamed and whether it uses any term the learner hasn't seen. The course plan row says assumes: str.split, list indexing, Python functions; teaches: can extract the numeric field from a fixed-format log line.",
+      "expected_output": "Reviewer writes and runs adversarial solutions (hardcoded return, wrong field index, a solution that only works on the sample line) against CHECKS via the harness, reports which cheats survive as high-severity findings, and walks prose/messages for chain violations against the stated assumes list.",
+      "files": []
+    }
+  ]
+}

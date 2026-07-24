@@ -1,0 +1,15 @@
+# gitleaks config — keeps every built-in secret rule. This repo holds a
+# single-user lesson app and its content; the only real secret is the
+# ANTHROPIC_API_KEY in .env (git-ignored, never committed). This is a
+# backstop against an accidental paste.
+# https://github.com/gitleaks/gitleaks#configuration
+title = "lesson-engine"
+
+[extend]
+useDefault = true # built-in rules: API keys, generic high-entropy, etc.
+
+[allowlist]
+description = "Generated files (dependency integrity hashes look high-entropy)"
+paths = [
+  '''package-lock\.json''',
+]

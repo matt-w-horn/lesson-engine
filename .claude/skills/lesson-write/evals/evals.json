@@ -1,0 +1,23 @@
+{
+  "skill_name": "lesson-write",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the slicing-debug lesson for lesson-engine. The unit is 'Trimming a sensor log' in course python-basics; the ledger row says: objective = learner can spot an off-by-one slice end that silently drops a valid reading; assumes = list indexing from zero, slicing with [start:end], sum(), the readings list [3, 12, 14, 15, 2] with its warm-up and cool-down noise; teaches = the end-index-is-exclusive rule as a debuggable error. Use the existing slicing-read and slicing-complete lessons for vocabulary and numbers.",
+      "expected_output": "A lessons/slicing-debug/ directory with lesson.md (frontmatter type: debug, task-first shape with a :::task giving symptom and success condition, one python starter fence containing a realistic misconception bug that runs without crashing, sanity anchors in the :::why) and grade.py (CHECKS list targeting the anchors, one hidden edge, hint-voice messages), consistent with the unit's existing terminology and numbers.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The interest-explore lesson feels wordy and the hint on years_is_minimal gives too much away. Tighten the prose and fix the hint without changing what the lesson teaches.",
+      "expected_output": "Edits to interest-explore/lesson.md prose (deadwood cut, known-new order kept, predict intact, task-first shape preserved) and grade.py message rewritten to coach without revealing the target year or the compounding rule that produces it; validator still clean; numbers unchanged; the scenario_pinned check untouched.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Add a write lesson to the temperature-stats unit: learner builds daily_range(temps) returning the difference between the highest and lowest reading, raising ValueError on an empty list. Audience per course plan: fluent Python, has completed temperature-read/explore/complete.",
+      "expected_output": "temperature-write/lesson.md with a spec pinning callable name (entry_point), units, return type, the empty-list edge case as behavior, plus grading.ai augment criteria forbidding hardcoding; grade.py with _close-based checks including a _raises check for the empty list, one hidden boundary case; idiomatic (not dumbed-down) reference solution recorded in the course plan.",
+      "files": []
+    }
+  ]
+}

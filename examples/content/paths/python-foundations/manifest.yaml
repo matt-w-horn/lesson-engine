@@ -1,0 +1,23 @@
+# python-foundations — hierarchy is data: array order IS the order.
+# Each unit drills one concept through the full practice ladder:
+# read_run, explore, debug, complete, write.
+path:
+  id: python-foundations
+  title: "Python Foundations"
+  courses:
+    - id: everyday-python
+      title: "Everyday Python"
+      units:
+        - id: lists
+          title: "Lists and loops: slices and running totals"
+          lessons: [lists-read, lists-explore, lists-debug, lists-complete, lists-write]
+        - id: functions
+          title: "Functions and edge cases: guards and early returns"
+          lessons:
+            [
+              functions-read,
+              functions-explore,
+              functions-debug,
+              functions-complete,
+              functions-write,
+            ]

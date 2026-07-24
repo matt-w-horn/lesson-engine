@@ -1,0 +1,1199 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  /* A faint wash of overhead light. Fixed so scrolling doesn't drag the
+     lighting around. */
+  background:
+    radial-gradient(100rem 26rem at 50% -10rem, var(--ambient-glow), transparent 70%)
+      fixed,
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- topbar ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  height: var(--topbar-h);
+  padding: 0 1.3rem;
+  border-bottom: 1px solid var(--border-strong);
+  font-family: var(--font-ui);
+  position: sticky;
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--bg-topbar) 92%, #fff),
+    var(--bg-topbar)
+  );
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--border) 60%, transparent);
+  z-index: 10;
+}
+/* Lighting is implied, never drawn: no fixtures, no beams. Surfaces are
+   top-lit (gradients + the rim highlight inside --shadow-panel), shadows
+   fall softly downward, a faint ambient wash warms the page top, and the
+   only things that glow are the ones that mean something — the progress
+   fills, the EP pill, the status dot. */
+
+.brand {
+  font-weight: 600;
+  font-size: 0.92rem;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  white-space: nowrap;
+}
+.topbar-side {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: none;
+}
+/* Breadcrumbs live in the toolbar; each crumb yields with an ellipsis
+   before the trail ever wraps or pushes the EP pill out. */
+.topbar-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
+  margin-right: auto;
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+.crumb {
+  min-width: 2rem;
+  max-width: 16rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+span.crumb {
+  color: var(--text);
+}
+.crumb-sep {
+  flex: none;
+  color: var(--text-faint);
+}
+.ep-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  background: var(--reward-soft);
+  color: var(--reward);
+  border: 1px solid color-mix(in srgb, var(--reward) 25%, transparent);
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+  box-shadow: 0 0 10px -2px var(--glow-reward);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ep-badge.bump {
+    animation: ep-bump 0.45s ease-out;
+  }
+  @keyframes ep-bump {
+    30% {
+      transform: scale(1.1);
+      box-shadow: 0 0 16px -2px var(--glow-reward);
+    }
+  }
+}
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--border);
+  background: var(--bg-panel);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.theme-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+}
+
+/* ---------- page shells & shared header pieces ---------- */
+
+.page {
+  max-width: calc(var(--measure) + 2.6rem);
+  margin: 0 auto;
+  padding: 2rem 1.3rem 4.5rem;
+}
+h1 {
+  font-family: var(--font-body);
+  font-size: clamp(1.5rem, 3.4vw, 1.95rem);
+  line-height: 1.18;
+  letter-spacing: -0.012em;
+  margin: 0.3rem 0 0.9rem;
+}
+.muted {
+  color: var(--text-muted);
+}
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+  margin: 0 0 0.2rem;
+}
+.eyebrow .done-badge {
+  color: var(--pass);
+}
+
+.rollup-line {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: var(--font-ui);
+  font-size: 0.84rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  margin-bottom: 1.6rem;
+}
+.progress-bar {
+  flex: 0 0 11rem;
+  max-width: 11rem;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--bg-inset);
+  box-shadow: inset 0 1px 1px light-dark(rgba(51, 42, 32, 0.1), rgba(0, 0, 0, 0.5));
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--pass), var(--pass-bright));
+  border-radius: 999px;
+  box-shadow: 0 0 6px var(--glow-pass);
+  transition: width 0.3s ease;
+}
+.progress-fill[style*="width: 0%"] {
+  box-shadow: none; /* an empty bar casts no light */
+}
+@media (prefers-reduced-motion: no-preference) {
+  .progress-fill.pulse {
+    animation: glow-pulse 0.9s ease-out;
+  }
+  @keyframes glow-pulse {
+    35% {
+      box-shadow: 0 0 16px 4px var(--glow-pass);
+      filter: brightness(1.25);
+    }
+  }
+}
+
+/* ---------- course / unit shelves ---------- */
+
+.card-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+}
+.card {
+  display: block;
+  padding: 1rem 1.15rem 1.05rem;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--bg-panel) 96%, #fff),
+    var(--bg-panel)
+  );
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  color: var(--text);
+}
+.card:hover {
+  text-decoration: none;
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-1px);
+}
+.card .eyebrow {
+  color: var(--text-faint);
+}
+.card-title {
+  font-weight: 600;
+  font-family: var(--font-ui);
+  font-size: 1.02rem;
+}
+.card-meta {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  margin: 0.2rem 0 0.65rem;
+}
+
+/* ---------- lesson list (the ladder, visible) ---------- */
+
+.lesson-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+.lesson-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.62rem 0.9rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 0.92rem;
+}
+.lesson-row:hover {
+  text-decoration: none;
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: var(--shadow-panel);
+}
+.lesson-row.done .lesson-title {
+  color: var(--text-muted);
+}
+.lesson-check {
+  width: 1rem;
+  text-align: right;
+  color: var(--pass);
+  font-weight: 700;
+  flex: none;
+}
+.stage-marker.pending {
+  opacity: 0.25;
+}
+.lesson-title {
+  flex: 1;
+}
+.lesson-mins {
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-faint);
+}
+.ladder-note {
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: var(--text-faint);
+  margin: 1rem 0 0;
+}
+
+/* The scaffolding-fade marker: fill = support still standing. */
+.stage-marker {
+  display: inline-block;
+  flex: none;
+  width: 0.68rem;
+  height: 0.68rem;
+  border: 1.5px solid var(--accent);
+  border-radius: 2px;
+  background: linear-gradient(
+    to top,
+    var(--accent) var(--fill),
+    transparent var(--fill)
+  );
+}
+.type-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+/* The unit runway, seated into the toolbar's bottom edge, full viewport
+   width. It fills with the share of this unit's lessons already passed, so
+   green keeps the one meaning it has everywhere else in the app
+   (completion) and position never masquerades as progress. It replaces the
+   per-lesson ladder chips the header used to carry. An absolute child of
+   the sticky toolbar (never position:fixed), so it shares the toolbar's
+   layer and moves with it during rubber-band overscroll. */
+.unit-position {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--track-socket);
+  box-shadow: inset 0 1px 1px light-dark(rgba(51, 42, 32, 0.22), rgba(0, 0, 0, 0.55));
+}
+/* One continuous strip, dark until earned: the unlit remainder is a recess
+   in the surface, and the lit part is a solid lightbar with a fine diagonal
+   hatch running through it, so the fill has grain and direction without
+   breaking into teeth. */
+.unit-position-fill {
+  height: 100%;
+  background-color: var(--pass-bright);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 2px,
+      color-mix(in srgb, #fff 34%, transparent) 2px 3.4px
+    ),
+    linear-gradient(90deg, var(--pass), var(--pass-bright));
+  box-shadow: 0 0 6px 1px var(--glow-pass);
+}
+.unit-position-fill[style*="width: 0%"] {
+  box-shadow: none; /* nothing passed yet casts no light */
+}
+@media (prefers-reduced-motion: no-preference) {
+  .unit-position-fill {
+    transition: width 0.4s ease;
+  }
+}
+
+/* ---------- lesson page header ---------- */
+
+/* Compact: one modest line, meta beside it. The breadcrumbs are up in the
+   toolbar, so all reclaimed height goes to the reading column. */
+.lesson-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin: 0 0 0.7rem;
+}
+.lesson-head h1 {
+  font-size: 1.16rem;
+  line-height: 1.3;
+  margin: 0;
+}
+.lesson-meta {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.ladder-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  font-family: var(--font-ui);
+  margin: 0 0 1.1rem -0.5rem;
+}
+.ladder-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.34rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  color: var(--text);
+}
+a.ladder-step:hover {
+  text-decoration: none;
+  border-color: var(--border);
+  background: var(--bg-panel);
+}
+.ladder-step.current {
+  border-color: var(--border-strong);
+  background: var(--bg-panel);
+}
+.ladder-step.done .stage-marker {
+  opacity: 0.45;
+}
+.ladder-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Doing-first split pane (lesson-engine/CLAUDE.md): context on the left,
+   the permanent work surface on the right. Above 1100px it becomes a
+   full-height IDE split — reading pane ⅓, workbench ⅔, each scrolling on
+   its own. Below 1100px it stacks, where the DOM order (predict → prose →
+   editor) keeps predict-before-answer. */
+.page:has(> .lesson) {
+  max-width: none;
+  padding: 0;
+}
+.lesson-context {
+  padding: 1.1rem 1.6rem 3rem;
+}
+.lesson-action {
+  padding: 0 1.6rem 3rem; /* stacked view: keep the workbench off the edges */
+}
+@media (min-width: 1100px) {
+  .lesson {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    height: calc(100dvh - var(--topbar-h));
+  }
+  .lesson-context {
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+  }
+  .lesson-action {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 1.1rem 1.3rem 1.2rem;
+  }
+  .workbench {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .editor {
+    flex: 1 1 auto;
+    min-height: 10rem; /* the code never shrinks past ~8 visible lines */
+  }
+  .editor .cm-editor {
+    height: 100%;
+    max-height: none;
+  }
+  /* One scroll region for results + console: it yields space to the editor
+     first (flex-shrink), then scrolls internally. Nothing is ever clipped. */
+  .workbench-output {
+    flex: 0 1 auto;
+    min-height: 0;
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+}
+.done-badge {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--pass);
+}
+/* The completion ✓, an inline SVG so a fresh completion can draw itself
+   stroke-first. Already-done lessons render it fully drawn. */
+.check-draw {
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  vertical-align: -0.08em;
+}
+.check-draw path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16;
+  stroke-dashoffset: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .check-draw.fresh path {
+    animation: draw-check 300ms ease-out 80ms backwards;
+  }
+  @keyframes draw-check {
+    from {
+      stroke-dashoffset: 16;
+    }
+  }
+}
+
+/* ---------- prose (the reading column) ---------- */
+
+.prose {
+  margin-bottom: 1rem;
+  max-width: var(--measure);
+}
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 0.95em;
+}
+.prose li {
+  margin-bottom: 0.35em;
+}
+.prose h2,
+.prose h3 {
+  font-size: 1.2rem;
+  line-height: 1.3;
+  margin: 1.6em 0 0.5em;
+}
+.prose pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--bg-code);
+  padding: 0.1em 0.32em;
+  border-radius: 4px;
+}
+.prose pre code {
+  background: none;
+  padding: 0;
+}
+.prose img {
+  max-width: 100%;
+}
+.prose pre.mermaid {
+  background: var(--bg-panel);
+  text-align: center;
+}
+.prose .katex-display {
+  margin: 1.1em 0;
+  padding: 0.2em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* The task card: sage, the lesson's one call to action. It leads the reading
+   column, so the learner meets the thing to do before any explanation. */
+.task-card {
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-panel);
+  padding: 0.8rem 1.1rem;
+  margin: 0 0 1.2rem;
+}
+.task-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--accent);
+  margin: 0 0 0.3rem;
+}
+.task-card > p:last-child {
+  margin-bottom: 0;
+}
+
+/* The explanation, collapsed by default: available on demand, never in the
+   way of the code. */
+.prose details.hint {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 0 0 1.2rem;
+}
+.prose details.hint > summary {
+  font-family: var(--font-ui);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.prose details.hint > summary::-webkit-details-marker {
+  display: none;
+}
+.prose details.hint > summary::before {
+  content: "▸";
+  color: var(--text-faint);
+  transition: transform 120ms ease;
+}
+.prose details.hint[open] > summary::before {
+  transform: rotate(90deg);
+}
+.prose details.hint > summary:hover {
+  color: var(--accent);
+}
+.prose details.hint > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: var(--radius);
+}
+.prose details.hint[open] > summary {
+  padding-bottom: 0.7rem;
+}
+.hint-body {
+  padding: 0.8rem 1.1rem 0.95rem;
+  border-top: 1px solid var(--border);
+}
+.hint-body > *:first-child {
+  margin-top: 0;
+}
+.hint-body > *:last-child {
+  margin-bottom: 0;
+}
+
+/* The predict card: amber — the bistable moment, not yet determined. */
+.predict-box {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  background: var(--warn-soft);
+  border: 1px solid color-mix(in srgb, var(--warn) 28%, transparent);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.1rem;
+  max-width: var(--measure);
+}
+.predict-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--warn);
+  margin-bottom: 0.25rem;
+}
+
+/* ---------- the workbench (editor · actions · console) ---------- */
+
+.workbench {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
+}
+.workbench-head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.95rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--bg-panel) 94%, #fff),
+    var(--bg-panel)
+  );
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+/* The runtime's status LED. It has to distinguish three things, because a
+   runtime that has given up must never keep showing the same "working on
+   it" amber as one that is still booting: amber and breathing while it
+   loads, steady green when Python is ready, rust and steady when it failed. */
+.status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--warn);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--warn) 55%, transparent);
+  flex: none;
+}
+.status-dot.ready {
+  background: var(--pass-bright);
+  box-shadow: 0 0 6px var(--glow-pass);
+}
+.status-dot.failed {
+  background: var(--fail);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--fail) 55%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .status-dot.busy {
+    animation: dot-breathe 1.6s ease-in-out infinite;
+  }
+  @keyframes dot-breathe {
+    50% {
+      opacity: 0.45;
+    }
+  }
+}
+.workbench-head .btn-quiet {
+  margin-left: auto;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.78rem;
+}
+
+.editor {
+  background: var(--bg-code);
+}
+.editor .cm-editor {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  max-height: 30rem;
+  background: var(--bg-code);
+  color: var(--text);
+  padding: 0.3rem 0;
+}
+.editor .cm-editor.cm-focused {
+  outline: none; /* focus shown on the workbench frame instead (WCAG 1.4.11) */
+}
+.workbench:has(.cm-focused) {
+  border-color: var(--accent);
+}
+.editor .cm-gutters {
+  background: var(--bg-code);
+  color: var(--text-faint);
+  border-right: 1px solid var(--border);
+  padding-right: 0.2rem;
+}
+.editor .cm-activeLine {
+  background: var(--active-line);
+}
+.editor .cm-activeLineGutter {
+  background: var(--active-line);
+  color: var(--text);
+}
+.editor .cm-content {
+  caret-color: var(--text);
+}
+.editor .cm-cursor {
+  border-left-color: var(--text);
+}
+.editor .cm-selectionBackground,
+.editor .cm-editor ::selection {
+  background: var(--selection) !important;
+}
+
+/* Autocomplete popup. Unstyled it ships a stock white list, which is wrong in
+   dark mode; these are the app's own tokens. The tooltip is portalled to the
+   body, so it cannot be scoped under .editor. */
+.cm-tooltip.cm-tooltip-autocomplete {
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
+}
+.cm-tooltip-autocomplete > ul {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  max-height: 14rem;
+}
+.cm-tooltip-autocomplete > ul > li {
+  padding: 0.2rem 0.55rem;
+  color: var(--text);
+}
+.cm-tooltip-autocomplete > ul > li[aria-selected] {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+.cm-completionLabel {
+  color: inherit;
+}
+.cm-completionMatchedText {
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--accent);
+}
+.cm-completionDetail {
+  margin-left: 0.6rem;
+  font-style: normal;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+.workbench-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.95rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.48rem 1.05rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-panel);
+  color: var(--text);
+  cursor: pointer;
+}
+/* The chord printed inside a button: quiet enough that the verb still leads. */
+.btn-kbd {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.16rem 0.32rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-inset);
+  color: var(--text-faint);
+}
+/* On the filled button the surroundings are the accent, so the hint borrows
+   the button's own text color instead of a theme-specific overlay. */
+.btn-primary .btn-kbd {
+  border-color: currentColor;
+  background: transparent;
+  color: inherit;
+  opacity: 0.7;
+}
+/* Touch devices have no chord to press. Keyed on pointer, not width: a narrow
+   desktop window still has a keyboard. */
+@media (hover: none) and (pointer: coarse) {
+  .btn-kbd {
+    display: none;
+  }
+}
+.btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: default;
+}
+.btn[aria-disabled="true"]:hover {
+  text-decoration: none;
+  border-color: var(--border);
+  box-shadow: none;
+}
+.btn-primary {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--accent) 90%, #fff),
+    var(--accent)
+  );
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+  /* backlit while powered: a lit inner bottom edge plus a soft under-glow,
+     like an LED seated under the key. Disabled buttons go dark. */
+  box-shadow:
+    inset 0 -1px 0 color-mix(in srgb, #fff 30%, transparent),
+    0 3px 10px -3px var(--glow-accent);
+}
+.btn-primary:disabled {
+  box-shadow: none;
+}
+.btn-primary:hover:not(:disabled) {
+  color: var(--accent-contrast);
+  filter: brightness(1.06);
+  box-shadow: 0 2px 12px -2px var(--glow-accent);
+}
+.btn-quiet {
+  border-color: transparent;
+  background: none;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* The armed Next button: a sweep fills it left-to-right on the auto-advance
+   timer (duration set inline from the same constant the timer uses), with a
+   small "auto" chip naming what's happening. Reduced motion gets the chip
+   and a static highlight instead of a sweep — it still advances. */
+.btn.counting {
+  position: relative;
+  overflow: hidden;
+}
+.btn.counting .btn-label,
+.btn.counting .btn-auto {
+  position: relative; /* paint above the sweep */
+}
+.btn-sweep {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, currentColor 20%, transparent);
+  transform-origin: left;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn-sweep {
+    transform: scaleX(0);
+    animation-name: sweep-fill;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+  @keyframes sweep-fill {
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+.btn-auto {
+  font-family: var(--font-ui);
+  font-size: 0.64rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 15%, transparent);
+}
+
+/* keyboard cheat sheet, opened with "?" */
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: var(--overlay-scrim);
+  backdrop-filter: blur(2px);
+}
+.shortcuts {
+  width: min(24rem, 100%);
+  padding: 1.25rem 1.4rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-panel);
+  font-family: var(--font-ui);
+}
+.shortcuts h2 {
+  margin: 0 0 0.9rem;
+  font-size: 1rem;
+}
+.shortcut-list {
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.86rem;
+}
+.shortcut-row dt {
+  color: var(--text-muted);
+}
+.shortcut-row dd {
+  margin: 0;
+}
+.shortcut-foot {
+  margin: 0.9rem 0 0.9rem;
+  font-size: 0.78rem;
+}
+
+/* The results + console region. Unrendered until the first Run/Submit (the
+   editor keeps the height); once present it sits in flow at the foot of the
+   workbench column behind one clear top rule. */
+.workbench-output {
+  border-top: 1px solid var(--border-strong);
+}
+
+/* console: the inset well where output lands */
+.output-panel {
+  background: var(--bg-inset);
+  box-shadow: inset 0 2px 4px -2px light-dark(rgba(51, 42, 32, 0.14), rgba(0, 0, 0, 0.55));
+  padding: 0.6rem 0.95rem 0.75rem;
+  display: grid;
+  gap: 0.55rem;
+}
+.results + .output-panel {
+  border-top: 1px solid var(--border);
+}
+.output-quiet {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  color: var(--text-faint);
+}
+.console-label {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-faint);
+}
+.output-stdout {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  margin: 0;
+}
+.output-error {
+  background: var(--fail-soft);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+.output-error-title {
+  color: var(--fail);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.output-error pre {
+  margin: 0;
+  white-space: pre-wrap;
+  color: var(--text-muted);
+}
+.output-figure {
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+/* ---------- grade results (a section of the workbench) ---------- */
+
+.results {
+  border-left: 3px solid var(--border-strong);
+  padding: 0.85rem 1.05rem;
+  font-family: var(--font-ui);
+  background: var(--bg-panel);
+}
+.results-pass {
+  border-left-color: var(--pass-bright);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--pass-soft) 55%, var(--bg-panel)),
+    var(--bg-panel) 55%
+  );
+}
+.results-fail {
+  border-left-color: var(--fail);
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--fail-soft) 45%, var(--bg-panel)),
+    var(--bg-panel) 55%
+  );
+}
+.results-header {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.results-pass .results-header {
+  color: var(--pass);
+}
+.results-fail .results-header {
+  color: var(--fail);
+}
+.results-score {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+.check-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.87rem;
+}
+.check-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+.check-icon {
+  width: 1rem;
+  font-weight: 700;
+  flex: none;
+}
+.check-pass .check-icon {
+  color: var(--pass);
+}
+.check-fail .check-icon {
+  color: var(--fail);
+}
+.check-skip {
+  color: var(--text-muted);
+}
+.results-note {
+  margin: 0.6rem 0 0;
+  font-size: 0.82rem;
+  color: var(--warn);
+}
+
+/* Back/Next live in the actions row; the spacer pushes them right. */
+.workbench-actions {
+  flex-wrap: wrap;
+}
+.workbench-actions .nav-spacer {
+  margin-left: auto;
+}
+
+/* the one-shot completion confetti canvas */
+.confetti {
+  position: fixed;
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* ---------- boot error ---------- */
+
+.boot-error {
+  max-width: var(--measure);
+  margin: 3rem auto;
+  padding: 0 1.2rem;
+  font-family: var(--font-ui);
+}
+.boot-error pre {
+  background: var(--fail-soft);
+  padding: 1rem;
+  border-radius: var(--radius);
+  white-space: pre-wrap;
+}
+
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .card,
+  .lesson-row,
+  .btn,
+  .workbench {
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease;
+  }
+  .results {
+    animation: rise 0.25s ease;
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+}

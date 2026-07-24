@@ -1,0 +1,58 @@
+{
+  "name": "lesson-engine",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Practice-first lesson engine: markdown lessons, an in-browser Python workbench, and deterministic grading",
+  "license": "MIT",
+  "author": "Matt Horn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matt-w-horn/lesson-engine"
+  },
+  "engines": {
+    "node": ">=20.11"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run vendor:pyodide && tsc --noEmit && vite build",
+    "start": "tsx server/index.ts",
+    "validate": "tsx scripts/validate.ts",
+    "vendor:pyodide": "node scripts/vendor-pyodide.mjs",
+    "postinstall": "node scripts/vendor-pyodide.mjs",
+    "test": "tsx scripts/validate.ts examples/content && vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.112.5",
+    "@codemirror/autocomplete": "^6.20.3",
+    "@codemirror/commands": "^6.8.0",
+    "@codemirror/lang-python": "^6.1.7",
+    "@codemirror/language": "^6.10.8",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.36.2",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@hono/node-server": "^1.13.8",
+    "@lezer/highlight": "^1.2.3",
+    "@mdit/plugin-katex": "^0.16.0",
+    "@preact/signals": "^2.0.1",
+    "hono": "^4.7.0",
+    "js-yaml": "^4.1.0",
+    "katex": "^0.16.21",
+    "markdown-it": "^14.1.0",
+    "mermaid": "^11.4.1",
+    "preact": "^10.25.4",
+    "pyodide": "^0.26.4",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.9.4",
+    "@types/js-yaml": "^4.0.9",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0",
+    "vitest": "^3.0.5"
+  }
+}

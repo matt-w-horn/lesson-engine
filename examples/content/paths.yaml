@@ -1,0 +1,3 @@
+# Which paths the engine serves, in shelf order. Each id is a folder under
+# paths/ with its own manifest.yaml and lessons/.
+paths: [python-foundations]
