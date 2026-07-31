@@ -36,7 +36,7 @@
     "@lezer/highlight": "^1.2.3",
     "@mdit/plugin-katex": "^1.0.1",
     "@preact/signals": "^2.0.1",
-    "hono": "^4.7.0",
+    "hono": "^4.12.32",
     "js-yaml": "^4.1.0",
     "katex": "^0.16.21",
     "markdown-it": "^14.1.0",
