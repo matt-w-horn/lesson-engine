@@ -196,11 +196,9 @@ own origin. A learner's browser never fetches executable code from a third
 party, and the whole thing keeps working behind a strict firewall.
 
 The default vendor step covers pure-Python lessons. If your content declares
-`packages`, fetch those wheels once:
-
-```sh
-npm run vendor:pyodide -- numpy matplotlib   # or --all for every allowlisted one
-```
+`packages`, fetch those wheels once with
+`npm run vendor:pyodide -- numpy matplotlib` (or `--all` for every
+allowlisted one).
 
 Wheels come from the pinned Pyodide release and are verified against the
 sha256 in its lockfile. They stay out of the default install because they're
