@@ -4,11 +4,13 @@
 ![license: MIT](https://img.shields.io/badge/license-MIT-blue)
 ![node: >=20.11](https://img.shields.io/badge/node-%3E%3D20.11-brightgreen)
 
-Markdown-and-YAML lessons, an in-browser Python workbench, deterministic
-graders. A lesson is a short page of prose beside a real editor: read a
+Lesson Engine is a local web app for teaching yourself (or your team) Python
+through short, auto-graded lessons that you author as plain Markdown and YAML
+files. A lesson is a short page of prose beside a real editor: read a
 little, write Python, run it, see which checks pass. The Python is
 WebAssembly ([Pyodide](https://pyodide.org/)) running in your own browser,
-so nothing you type is executed on a server. No account, no telemetry.
+so nothing you type is executed on a server. No account, no telemetry; the
+one network feature, an opt-in AI check, is [below](#the-optional-ai-check).
 
 <p align="center">
   <img src="docs/lesson-light.png" width="1200" alt="A lesson from the bundled starter path: the task and its explanation on the left, the editor holding real Python on the right, and the console below showing the output of a run.">
@@ -16,15 +18,18 @@ so nothing you type is executed on a server. No account, no telemetry.
   <sub>The bundled starter path, one Run in. Explanation on the left; the editor and console are where the time goes.</sub>
 </p>
 
-Hosted learning platforms are the right call for public courses. This engine
-is for material that can't go on one: onboarding for a proprietary codebase,
-a subject you want taught your way, your own interview drilling. It is
-single-learner and local by design. Lessons are plain files you can diff and
-review in a PR, and progress is one JSON file in your home directory.
+This engine is for material that can't go on a hosted learning platform:
+onboarding for a proprietary codebase, a subject you want taught your way,
+your own interview drilling. It is single-learner, local, and Python-only by
+design (another language would mean replacing the Pyodide worker). Lessons
+are plain files you can diff and review in a PR, and progress is one JSON
+file in your home directory.
 
 ## Quickstart
 
 ```sh
+git clone https://github.com/matt-w-horn/lesson-engine
+cd lesson-engine
 npm install
 npm run dev
 ```
@@ -55,9 +60,11 @@ first, blank editor last:
 | `complete` | fills in the missing part of a partial solution |
 | `write` | writes the solution from scratch |
 
-The ladder leans on two old findings from learning research, the testing
-effect and the worked-example effect: retrieval beats rereading, and studying
-a solved problem beats flailing at an unsolved one. So prose stays short,
+The ladder leans on two old findings from learning research, the
+[testing effect](https://en.wikipedia.org/wiki/Testing_effect) and the
+[worked-example effect](https://en.wikipedia.org/wiki/Worked-example_effect):
+retrieval beats rereading, and studying a solved problem beats flailing at an
+unsolved one. So prose stays short,
 every lesson asks for code within the first minute, and a lesson completes
 only when its checks pass.
 
@@ -88,7 +95,8 @@ Everything you author lives outside the repo, in a data directory:
 Both run modes serve content from this directory, and the engine never touches
 it after the first-run seed. Adding, removing, or reordering lessons is a data
 change; no engine code is involved. `npm run validate` checks the whole
-directory for structure and referential integrity.
+directory for structure and for broken references (every lesson id a manifest
+names must exist).
 
 Progress writes are atomic, and a corrupt `progress.json` is backed up rather
 than deleted.
@@ -116,7 +124,7 @@ def middle(xs):
 ````
 
 Beyond `id`, `title`, and `type`, frontmatter can declare `packages` (Pyodide
-packages the lesson imports), `predict` (a predict-before-you-run prompt),
+packages the lesson imports — vendor them first, [below](#nothing-loads-from-a-cdn)), `predict` (a predict-before-you-run prompt),
 `entry_point`, `est_minutes`, `tags`, and `grading` (the optional AI check,
 below). Prose supports KaTeX math, ` ```mermaid ` diagrams, and images.
 
@@ -152,9 +160,9 @@ Array order is presentation order.
 
 ### The optional AI check
 
-Deterministic checks own everything they can express. For requirements they
-can't (structure, style, "must use a comprehension"), frontmatter may declare
-an AI check:
+Deterministic checks (plain Python: same submission, same verdict) own
+everything they can express. For requirements they can't (structure, style,
+"must use a comprehension"), frontmatter may declare an AI check:
 
 ```yaml
 grading:
@@ -166,7 +174,8 @@ grading:
 > [!NOTE]
 > This is the engine's only network feature, and it is opt-in per lesson; the
 > bundled starter path doesn't use it. For lessons that declare it, the
-> learner's submission is sent to the Anthropic API for a verdict, which
+> learner's submission is sent to the Anthropic API for a verdict (one API
+> call per graded submission), which
 > needs a key (`cp .env.example .env`, set `ANTHROPIC_API_KEY`). Without one,
 > `augment` lessons pass on their deterministic checks alone and `replace`
 > lessons report the grader as unavailable; everything else is untouched.
@@ -234,7 +243,8 @@ npm run vendor:pyodide   # re-vendor the Python runtime (add package names as ne
 ```
 
 Build and test are self-contained: no lesson content outside the repo, no
-Python install.
+Python install. A Makefile wraps build-and-serve for local convenience
+(`make help` lists targets; the `url` target is macOS/Caddy-specific).
 
 The map, if you're reading the source:
 
