@@ -124,9 +124,10 @@ def middle(xs):
 ````
 
 Beyond `id`, `title`, and `type`, frontmatter can declare `packages` (Pyodide
-packages the lesson imports — vendor them first, [below](#nothing-loads-from-a-cdn)), `predict` (a predict-before-you-run prompt),
-`entry_point`, `est_minutes`, `tags`, and `grading` (the optional AI check,
-below). Prose supports KaTeX math, ` ```mermaid ` diagrams, and images.
+packages the lesson imports; vendor them first,
+[below](#nothing-loads-from-a-cdn)), `predict` (a predict-before-you-run
+prompt), `entry_point`, `est_minutes`, `tags`, and `grading` (the optional AI
+check, below). Prose supports KaTeX math, ` ```mermaid ` diagrams, and images.
 
 `grade.py` defines `CHECKS`, a list run against the learner's namespace after
 their code executes:
@@ -212,7 +213,7 @@ Environment variables (each may also live in `.env`):
 | variable | meaning |
 |---|---|
 | `LESSON_ENGINE_DATA_DIR` | overrides the data directory (default `~/.lesson-engine`) |
-| `ANTHROPIC_API_KEY` | credential for the optional AI check — the only secret |
+| `ANTHROPIC_API_KEY` | credential for the optional AI check, the only secret |
 | `ANTHROPIC_AUTH_TOKEN` | accepted instead of the API key (bearer-token setups) |
 | `GRADER_MODEL` | model for the AI check (default `claude-opus-4-8`) |
 | `PORT` | port for `npm start` (default `4173`) |
@@ -246,17 +247,15 @@ Python install. A Makefile wraps build-and-serve for local convenience
 
 The map, if you're reading the source:
 
-- `src/schemas.ts` — zod schemas for every data shape, shared by the runtime,
-  the validator, and the server
-- `src/py/` — the Pyodide web worker: in-browser Python, run and grade snippets
-- `src/grading.ts` — the grading pipeline: run, deterministic checks, optional
-  AI verdict, one result
-- `server/` — Hono server: the built app, the content directory, the grader
-  and progress APIs
-- `scripts/vendor-pyodide.mjs` — vendors the Python runtime so nothing loads
-  from a CDN
+| path | what it is |
+|---|---|
+| `src/schemas.ts` | zod schemas for every data shape, shared by the runtime, the validator, and the server |
+| `src/py/` | the Pyodide web worker: in-browser Python, run and grade snippets |
+| `src/grading.ts` | the grading pipeline: run, deterministic checks, optional AI verdict, one result |
+| `server/` | Hono server: the built app, the content directory, the grader and progress APIs |
+| `scripts/vendor-pyodide.mjs` | vendors the Python runtime so nothing loads from a CDN |
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Security reports go through GitHub's private
+MIT; see [LICENSE](LICENSE). Security reports go through GitHub's private
 vulnerability reporting; see [SECURITY.md](SECURITY.md).
