@@ -4,9 +4,8 @@
 ![license: MIT](https://img.shields.io/badge/license-MIT-blue)
 ![node: >=20.11](https://img.shields.io/badge/node-%3E%3D20.11-brightgreen)
 
-Lesson Engine is a local web app for teaching yourself (or your team) Python
-through short, auto-graded lessons that you author as plain Markdown and YAML
-files. A lesson is a short page of prose beside a real editor: read a
+Lesson Engine is a local web app for teaching yourself Python through short,
+auto-graded lessons that you author as plain Markdown and YAML files. A lesson is a short page of prose beside a real editor: read a
 little, write Python, run it, see which checks pass. The Python is
 WebAssembly ([Pyodide](https://pyodide.org/)) running in your own browser,
 so nothing you type is executed on a server. No account, no telemetry; the
@@ -23,7 +22,8 @@ onboarding for a proprietary codebase, a subject you want taught your way,
 your own interview drilling. It is single-learner, local, and Python-only by
 design (another language would mean replacing the Pyodide worker). Lessons
 are plain files you can diff and review in a PR, and progress is one JSON
-file in your home directory.
+file in your home directory. There is no roll-up view: five learners means
+five machines and five `progress.json` files.
 
 ## Quickstart
 
@@ -37,11 +37,11 @@ npm run dev
 Open http://localhost:5173 and the starter path is on screen: Python
 fundamentals, taught through all five practice types. `npm install` vendors
 the Python runtime into the app (about 16 MB), and first run seeds your data
-directory (`~/.lesson-engine`) from the repo's `examples/content/`. After that
-it works on a plane.
+directory (`~/.lesson-engine`) from the repo's `examples/content/`. After that,
+nothing it needs comes off the network.
 
-Node 20.11 or newer is the only requirement. Python itself isn't needed; the
-workbench brings its own.
+Node 20.11 or newer is the only requirement. Python itself isn't needed.
+Lesson Engine ships its own.
 
 For a production build, `npm run build` then `npm start` serves the app at
 http://localhost:4173 with the same API routes.
@@ -63,8 +63,8 @@ first, blank editor last:
 The ladder leans on two old findings from learning research, the
 [testing effect](https://en.wikipedia.org/wiki/Testing_effect) and the
 [worked-example effect](https://en.wikipedia.org/wiki/Worked-example_effect):
-retrieval beats rereading, and studying a solved problem beats flailing at an
-unsolved one. So prose stays short,
+retrieval beats rereading, and a worked solution teaches faster than an
+unsolved problem does. So prose stays short,
 every lesson asks for code within the first minute, and a lesson completes
 only when its checks pass.
 
@@ -125,7 +125,7 @@ def middle(xs):
 
 Beyond `id`, `title`, and `type`, frontmatter can declare `packages` (Pyodide
 packages the lesson imports; vendor them first,
-[below](#nothing-loads-from-a-cdn)), `predict` (a predict-before-you-run
+[below](#packages-and-offline-use)), `predict` (a predict-before-you-run
 prompt), `entry_point`, `est_minutes`, `tags`, and `grading` (the optional AI
 check, below). Prose supports KaTeX math, ` ```mermaid ` diagrams, and images.
 
@@ -145,24 +145,25 @@ CHECKS = [
 
 `message` shows on failure. Write it as a hint toward the fix, never a bare
 "wrong" and never the answer. `"hidden": True` redacts a check's name and
-message for checks whose text would give the solution away. Here is what the
-learner sees when an attempt comes up short:
+message for checks whose text would give the solution away. A failing attempt
+looks like this:
 
 <p align="center">
   <img src="docs/checks.png" width="758" alt="A results card reading 'Keep going. Each attempt narrows it down. 4/6 checks': four green checks, one failed check whose message points at the missing round() call, and one failed hidden check.">
 </p>
 
-Two helpers are injected for graders: `_close(a, b)` for float comparison and
-`_raises(fn, *args, exc=ValueError)` for must-raise checks. `read_run` lessons
-use `CHECKS = []`; running is the practice.
+`grade.py` runs with two helpers already in scope: `_close(a, b)` for float
+comparison and `_raises(fn, *args, exc=ValueError)` for must-raise checks.
+`read_run` lessons use `CHECKS = []`, because running the example is the whole
+exercise.
 
-New lessons go live by listing the lesson id in the path's `manifest.yaml`.
-Array order is presentation order.
+A lesson appears once its id is in the path's `manifest.yaml`, in the order that
+file gives them.
 
 ### The optional AI check
 
-Deterministic checks (plain Python: same submission, same verdict) own
-everything they can express. For requirements they can't (structure, style,
+Use plain Python checks wherever they can express the requirement (same
+submission, same verdict). For requirements they can't reach (structure, style,
 "must use a comprehension"), frontmatter may declare an AI check:
 
 ```yaml
@@ -183,18 +184,17 @@ grading:
 
 ### Authoring at scale
 
-Everything above is hand-authoring, and it's the primary path. For bulk work
-the repo ships Claude Code skills in `.claude/skills/` (`path-build` walks
-course design, unit design, lesson writing, and review against source
-material you supply), but they produce the same two files per lesson, and
-nothing in the engine knows or cares how a lesson was written.
+Lessons are usually written by hand. For bulk work the repo ships Claude Code
+skills in `.claude/skills/`; `path-build` walks course design, unit design,
+lesson writing, and review against source material you supply. They produce the
+same two files per lesson, and the engine cannot tell the difference.
 
-## Nothing loads from a CDN
+## Packages and offline use
 
-The Python interpreter, its WebAssembly, the standard library, and every
-package wheel are vendored into the app at install time and served from your
-own origin. A learner's browser never fetches executable code from a third
-party, and the whole thing keeps working behind a strict firewall.
+Nothing loads from a CDN. The Python interpreter, its WebAssembly, the standard
+library, and every package wheel are vendored into the app at install time and
+served from your own origin. A learner's browser never fetches executable code
+from a third party, and the whole thing keeps working behind a strict firewall.
 
 The default vendor step covers pure-Python lessons. If your content declares
 `packages`, fetch those wheels once with
@@ -203,8 +203,8 @@ allowlisted one).
 
 Wheels come from the pinned Pyodide release and are verified against the
 sha256 in its lockfile. They stay out of the default install because they're
-large: numpy is 11 MB, scipy 45 MB. Vendored files are gitignored;
-`npm run vendor:pyodide` is how you rebuild them, not git.
+large: numpy is 11 MB, scipy 45 MB. Vendored files are gitignored. Rebuild
+them with `npm run vendor:pyodide` after a fresh clone.
 
 ## Configuration
 
@@ -224,12 +224,12 @@ Environment variables (each may also live in `.env`):
 |---|---|
 | `app_title` | name shown in the top bar |
 | `ep_per_lesson` | EP awarded per completed lesson |
-| `est_minutes_by_type` | estimated minutes for each of the five lesson types |
+| `est_minutes_by_type` | estimated minutes for each of the five practice types |
 | `default_packages` | Pyodide packages loaded for every lesson (vendor them first) |
 | `run_timeout_ms` | wall-clock limit for a Run |
 
-The Python version is pinned by the `pyodide` dependency in `package.json`
-and vendored from there; it is not a content setting.
+The Python version follows the `pyodide` dependency in `package.json` and is
+vendored from there. It is not a content setting.
 
 ## Development
 
