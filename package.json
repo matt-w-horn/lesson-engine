@@ -32,7 +32,7 @@
     "@codemirror/view": "^6.43.7",
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@fontsource/ibm-plex-sans": "^5.3.0",
-    "@hono/node-server": "^2.0.12",
+    "@hono/node-server": "^2.1.0",
     "@lezer/highlight": "^1.2.3",
     "@mdit/plugin-katex": "^1.0.1",
     "@preact/signals": "^2.0.1",
