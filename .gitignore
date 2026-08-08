@@ -1,22 +1,29 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
-.env
-.DS_Store
+
+# Vite-style local overrides
 *.local
 
 # The vendored Python runtime (npm run vendor:pyodide regenerates it from the
 # pinned pyodide package; ~15 MB of wasm has no business in git)
-public/pyodide/
+/public/pyodide/
 
-# Python bytecode (graders + scripts)
-*.pyc
+# Python bytecode
 __pycache__/
-
-# Local-only files
-CLAUDE.md
-.claude/settings.local.json
-.claude/worktrees/
+*.py[cod]
 
 # Makefile dev-server bookkeeping
 .dev-server.log
 .dev-server.pid
+
+# Secrets and local credentials (.env.example stays tracked).
+.env
+.env.*
+!.env.example
+
+# Claude Code working files (also global; repeated so clones get it too).
+.claude/
+CLAUDE.md

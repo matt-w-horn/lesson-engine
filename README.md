@@ -185,9 +185,17 @@ grading:
 ### Authoring at scale
 
 Lessons are usually written by hand. For bulk work the repo ships Claude Code
-skills in `.claude/skills/`; `path-build` walks course design, unit design,
-lesson writing, and review against source material you supply. They produce the
-same two files per lesson, and the engine cannot tell the difference.
+skills in `skills/`; `path-build` walks course design, unit design, lesson
+writing, and review against source material you supply. They produce the same
+two files per lesson, and the engine cannot tell the difference.
+
+Claude Code looks for skills under `.claude/skills/`, which is a symlink to
+`skills/`. Neither the symlink nor `.claude/` is tracked, so recreate it after a
+fresh clone:
+
+```sh
+mkdir -p .claude && ln -s ../skills .claude/skills
+```
 
 ## Packages and offline use
 
