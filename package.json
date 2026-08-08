@@ -23,7 +23,7 @@
     "test": "tsx scripts/validate.ts examples/content && vitest run"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.112.5",
+    "@anthropic-ai/sdk": "^0.115.0",
     "@codemirror/autocomplete": "^6.20.3",
     "@codemirror/commands": "^6.8.0",
     "@codemirror/lang-python": "^6.1.7",
