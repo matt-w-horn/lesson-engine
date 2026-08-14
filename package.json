@@ -43,7 +43,7 @@
     "mermaid": "^11.16.1",
     "preact": "^10.25.4",
     "pyodide": "^0.26.4",
-    "zod": "^3.25.0"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.9.4",
