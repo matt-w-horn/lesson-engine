@@ -39,7 +39,7 @@
     "hono": "^4.13.4",
     "js-yaml": "^4.3.1",
     "katex": "^0.16.21",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^15.0.1",
     "mermaid": "^11.16.1",
     "preact": "^10.29.8",
     "pyodide": "^0.26.4",
