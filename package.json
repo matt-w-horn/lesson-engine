@@ -35,7 +35,7 @@
     "@hono/node-server": "^2.1.0",
     "@lezer/highlight": "^1.2.3",
     "@mdit/plugin-katex": "^1.0.3",
-    "@preact/signals": "^2.11.1",
+    "@preact/signals": "^2.11.3",
     "hono": "^4.13.13",
     "js-yaml": "^4.3.2",
     "katex": "^0.18.2",
