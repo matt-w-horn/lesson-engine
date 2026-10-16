@@ -42,7 +42,7 @@
     "markdown-it": "^14.3.2",
     "mermaid": "^11.16.1",
     "preact": "^11.0.0",
-    "pyodide": "^0.26.4",
+    "pyodide": "^314.0.7",
     "zod": "^4.4.3"
   },
   "devDependencies": {
