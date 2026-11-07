@@ -59,6 +59,21 @@ describe(":::task and :::why containers", () => {
   });
 });
 
+describe("renderProse linkify", () => {
+  // linkify-it 6 defaults both of these off; src/markdown.ts turns them back on.
+  it("autolinks bare domains", () => {
+    expect(renderProse("See example.com now.")).toContain(
+      '<a href="http://example.com">example.com</a>',
+    );
+  });
+
+  it("keeps credentials inside an autolinked URL", () => {
+    expect(renderProse("See https://user:pw@example.com/a now.")).toContain(
+      '<a href="https://user:pw@example.com/a">',
+    );
+  });
+});
+
 describe("every bundled example lesson's prose renders", () => {
   // The engine ships only examples/content; real content lives in the data
   // dir and is validated there by `npm run validate`, not by the test suite.

@@ -3,7 +3,12 @@
 import MarkdownIt from "markdown-it";
 import { katex } from "@mdit/plugin-katex";
 
-const md: MarkdownIt = new MarkdownIt({ html: false, linkify: true });
+const md = new MarkdownIt({ html: false, linkify: true });
+// linkify-it 6 defaults fuzzyLink and urlAuth off; restore both so bare domains
+// and URLs with credentials still autolink. No option restores its other link
+// changes: fuzzy hosts with a port stay plain text, and Unicode punctuation now
+// ends a URL.
+md.linkify.set({ fuzzyLink: true, urlAuth: true });
 md.use(katex, { throwOnError: false });
 
 /* ---------- :::task and :::why containers ----------
@@ -93,7 +98,7 @@ const CONTAINER_LABEL: Record<ContainerName, string> = {
 
 md.renderer.rules.lesson_container_open = (tokens, idx) => {
   const token = tokens[idx];
-  const name = (token.meta?.name ?? "why") as ContainerName;
+  const name: ContainerName = token.meta?.name === "task" ? "task" : "why";
   // Inline markdown in the label, so a summary can name `code` or $math$.
   const label = token.info
     ? md.renderInline(token.info)
@@ -104,7 +109,8 @@ md.renderer.rules.lesson_container_open = (tokens, idx) => {
 };
 
 md.renderer.rules.lesson_container_close = (tokens, idx) => {
-  const name = (tokens[idx].meta?.name ?? "why") as ContainerName;
+  const name: ContainerName =
+    tokens[idx].meta?.name === "task" ? "task" : "why";
   return name === "task" ? "</div>\n" : "</div></details>\n";
 };
 
@@ -130,8 +136,15 @@ const defaultImage =
 md.renderer.rules.image = (tokens, idx, options, env, self) => {
   const token = tokens[idx];
   const src = token.attrGet("src");
-  const baseUrl: string | undefined = env?.baseUrl;
-  if (src && baseUrl && !/^([a-z]+:)?\/\//i.test(src) && !src.startsWith("/")) {
+  const baseUrl = env?.baseUrl;
+  if (
+    src &&
+    typeof src === "string" &&
+    baseUrl &&
+    typeof baseUrl === "string" &&
+    !/^([a-z]+:)?\/\//i.test(src) &&
+    !src.startsWith("/")
+  ) {
     token.attrSet("src", baseUrl + src);
   }
   return defaultImage(tokens, idx, options, env, self);
